@@ -1,20 +1,454 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ScrollView, TextInput, ActivityIndicator, Image } from 'react-native';
 
 export default function App() {
+  const [input, setInput] = useState('');
+  const [pokemon, setPokemon] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const inputRef = useRef(null);
+
+  const buscarPokemon = async () => {
+    if (!input.trim()) {
+      setError('⚠️ Digite o nome ou número do Pokémon');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setPokemon(null);
+
+    try {
+      // Buscar dados básicos
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${input.toLowerCase().trim()}`);
+      if (!res.ok) throw new Error('❌ Pokémon não encontrado');
+      const data = await res.json();
+
+      // Buscar espécie para descrição e evolução
+      const speciesRes = await fetch(data.species.url);
+      const speciesData = await speciesRes.json();
+
+      // Pegar descrição em português (ou inglês como fallback)
+      let description = 'Descrição não disponível.';
+      if (speciesData.flavor_text_entries) {
+        const ptEntry = speciesData.flavor_text_entries.find(
+          entry => entry.language.name === 'pt' && entry.version.name.includes('sun')
+        ) || speciesData.flavor_text_entries.find(
+          entry => entry.language.name === 'pt-br'
+        ) || speciesData.flavor_text_entries.find(
+          entry => entry.language.name === 'en'
+        );
+        if (ptEntry) {
+          description = ptEntry.flavor_text
+            .replace(/\f/g, ' ')
+            .replace(/\n/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        }
+      }
+
+      // Pegar linha evolutiva
+      let evolutionChain = ['—'];
+      if (speciesData.evolution_chain) {
+        const chainRes = await fetch(speciesData.evolution_chain.url);
+        const chainData = await chainRes.json();
+        
+        const getEvolutionNames = (chain) => {
+          const names = [chain.species.name];
+          if (chain.evolves_to && chain.evolves_to.length > 0) {
+            chain.evolves_to.forEach(evolution => {
+              names.push(...getEvolutionNames(evolution));
+            });
+          }
+          return names;
+        };
+        evolutionChain = getEvolutionNames(chainData.chain);
+      }
+
+      // Movimentos (limitar a 8)
+      const moves = data.moves
+        .map(m => m.move.name.replace(/-/g, ' '))
+        .map(name => name.charAt(0).toUpperCase() + name.slice(1))
+        .slice(0, 8);
+
+      // Imagem
+      const imageUrl = data.sprites.other?.['official-artwork']?.front_default || 
+                       data.sprites.front_default;
+
+      setPokemon({
+        name: data.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        id: data.id,
+        types: data.types.map(t => t.type.name),
+        height: (data.height / 10).toFixed(1),
+        weight: (data.weight / 10).toFixed(1),
+        image: imageUrl,
+        description,
+        evolutionChain,
+        moves,
+      });
+    } catch (err) {
+      setError(err.message || '❌ Erro na conexão');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = () => {
+    if (input.trim()) {
+      buscarPokemon();
+    } else {
+      inputRef.current?.focus();
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Página Inicial</Text>
-      <StatusBar style="auto" />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Banner */}
+        <ImageBackground
+          source={require('../assets/Pokemon.jpg')}
+          style={styles.banner}
+          imageStyle={styles.bannerImage}
+        />
+
+        {/* Título "Introdução:" */}
+        <View style={styles.introTitleContainer}>
+          <Text style={styles.introTitle}>Introdução:</Text>
+        </View>
+
+        {/* Introdução */}
+        <View style={styles.introBox}>
+          <Text style={styles.welcomeText}>Bem-vindo!</Text>
+          <Text style={styles.welcomeSubtext}>
+            Neste aplicativo, você vai explorar três temas:
+          </Text>
+          <Text style={styles.introText}>
+            {'\n'} <Text style={styles.bold}>Pokémon</Text>: criaturas digitais que viraram fenômeno global desde 1996, com tipos, habilidades e evoluções únicas.{'\n\n'}
+             <Text style={styles.bold}>APIs</Text> (Application Programming Interface): tecnologia que permite que aplicativos troquem dados com servidores — como se fosse um “cardápio” de informações disponíveis na internet.{'\n\n'}
+             <Text style={styles.bold}>PokéAPI</Text>: uma API pública e gratuita que reúne dados oficiais de todos os Pokémon. Ela é usada por milhares de devs para criar apps, sites e ferramentas — tudo de forma ética e não comercial.
+          </Text>
+        </View>
+
+        {/* === NOVO: Título "PokéAPI:" === */}
+        <View style={styles.introTitleContainer}>
+          <Text style={styles.introTitle}>PokéAPI:</Text>
+        </View>
+
+        {/* === NOVO: Container de explicação da PokéAPI === */}
+        <View style={styles.apiBox}>
+          <Text style={styles.apiText}>
+            A <Text style={styles.bold}>PokéAPI</Text> é uma API REST gratuita e de código aberto que fornece acesso a dados de todos os Pokémon, incluindo tipos, habilidades, evoluções, movimentos e descrições da Pokédex.{`\n\n`}
+            Ela funciona como um “servidor central” que responde requisições HTTP. Por exemplo:{`\n`}
+            • <Text style={styles.code}>GET https://pokeapi.co/api/v2/pokemon/pikachu</Text>{`\n`}
+            retorna um JSON com todos os dados do Pikachu.{`\n\n`}
+            Nenhum dado é armazenado localmente — tudo é buscado em tempo real. Isso torna o app leve e sempre atualizado.
+          </Text>
+        </View>
+
+        {/* Área de busca */}
+        <View style={styles.searchSection}>
+          <TextInput
+            ref={inputRef}
+            style={styles.input}
+            placeholder="Ex: pikachu, 25, charizard..."
+            value={input}
+            onChangeText={setInput}
+            onSubmitEditing={handleSearch}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleSearch}>
+            <Text style={styles.buttonText}>🔍 Buscar Pokémon</Text>
+          </TouchableOpacity>
+
+          {error && <Text style={styles.error}>{error}</Text>}
+
+          {loading && (
+            <View style={styles.loading}>
+              <ActivityIndicator size="small" color="#1976d2" />
+              <Text style={styles.loadingText}>Buscando...</Text>
+            </View>
+          )}
+
+          {pokemon && (
+            <View style={styles.resultCard}>
+              {pokemon.image && (
+                <Image source={{ uri: pokemon.image }} style={styles.pokemonImage} />
+              )}
+              <Text style={styles.pokemonName}>#{pokemon.id} {pokemon.name}</Text>
+              
+              <View style={styles.typesRow}>
+                {pokemon.types.map((type, i) => (
+                  <Text key={i} style={[styles.type, getTypeStyle(type)]}>
+                    {type}
+                  </Text>
+                ))}
+              </View>
+
+              <Text style={styles.sectionLabel}>📝 Descrição da Pokédex</Text>
+              <Text style={styles.description}>{pokemon.description}</Text>
+
+              <Text style={styles.sectionLabel}>🔄 Linha Evolutiva</Text>
+              <Text style={styles.evolution}>
+                {pokemon.evolutionChain.map((name, i) => (
+                  <Text key={i}>
+                    {name.replace(/\b\w/g, l => l.toUpperCase())}
+                    {i < pokemon.evolutionChain.length - 1 ? ' → ' : ''}
+                  </Text>
+                ))}
+              </Text>
+
+              <Text style={styles.sectionLabel}>🎯 Movimentos</Text>
+              <View style={styles.movesGrid}>
+                {pokemon.moves.map((move, i) => (
+                  <Text key={i} style={styles.move}>{move}</Text>
+                ))}
+              </View>
+
+              <Text style={styles.detail}>Altura: {pokemon.height} m</Text>
+              <Text style={styles.detail}>Peso: {pokemon.weight} kg</Text>
+            </View>
+          )}
+        </View>
+
+        <StatusBar style="dark" />
+      </ScrollView>
     </View>
   );
 }
 
+const getTypeStyle = (type) => {
+  const colors = {
+    normal: '#A8A77A', fire: '#EE8130', water: '#6390F0',
+    electric: '#F7D02C', grass: '#7AC74C', ice: '#96D9D6',
+    fighting: '#C22E28', poison: '#A33EA1', ground: '#E2BF65',
+    flying: '#A98FF3', psychic: '#F95587', bug: '#A6B91A',
+    rock: '#B6A136', ghost: '#735797', dragon: '#6F35FC',
+    dark: '#705746', steel: '#B7B7CE', fairy: '#D685AD',
+  };
+  return { backgroundColor: colors[type] || '#999999' };
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#bbf3f9',
+  },
+  scrollContent: {
+    paddingTop: 30,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
     alignItems: 'center',
+  },
+  banner: {
+    width: '100%',
+    height: 160,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: 24,
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 4,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  bannerImage: {
+    opacity: 0.85,
+  },
+  introTitleContainer: {
+    borderWidth: 2,
+    borderColor: '#fff',
+    backgroundColor: '#fff',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginBottom: 22,
+    alignSelf: 'flex-start',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  introTitle: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#1976d2',
+  },
+  introBox: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 20,
+    borderWidth: 3,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 4,
+    width: '100%',
+    maxWidth: 500,
+  },
+  apiBox: { // ✅ Novo container para PokéAPI
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 24,
+    borderWidth: 3,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 4,
+    width: '100%',
+    maxWidth: 500,
+  },
+  welcomeText: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#1976d2',
+    textAlign: 'center',
+    marginBottom: 6,
+  },
+  welcomeSubtext: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#444',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  introText: {
+    fontSize: 15,
+    color: '#333',
+    lineHeight: 22,
+  },
+  apiText: {
+    fontSize: 15,
+    color: '#333',
+    lineHeight: 22,
+  },
+  code: {
+    fontFamily: 'monospace',
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+    fontSize: 14,
+  },
+  bold: {
+    fontWeight: 'bold',
+    color: '#1976d2',
+  },
+  searchSection: {
+    width: '100%',
+    maxWidth: 500,
+    alignItems: 'center',
+  },
+  input: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 14,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    marginBottom: 12,
+  },
+  button: {
+    backgroundColor: '#1976d2',
+    paddingHorizontal: 28,
+    paddingVertical: 14,
+    borderRadius: 50,
+    alignSelf: 'center',
+  },
+  buttonText: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  error: {
+    color: '#d32f2f',
+    fontSize: 14,
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  loading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  loadingText: {
+    marginLeft: 8,
+    fontSize: 15,
+    color: '#555',
+  },
+  resultCard: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    marginTop: 20,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  pokemonImage: {
+    width: 120,
+    height: 120,
+    marginVertical: 10,
+  },
+  pokemonName: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  sectionLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1976d2',
+    marginVertical: 12,
+    alignSelf: 'flex-start',
+    paddingLeft: 4,
+  },
+  description: {
+    fontSize: 14,
+    color: '#444',
+    textAlign: 'center',
+    marginBottom: 12,
+    fontStyle: 'italic',
+  },
+  evolution: {
+    fontSize: 15,
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 14,
+    fontWeight: '500',
+  },
+  movesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
+    marginVertical: 10,
+  },
+  move: {
+    backgroundColor: '#e3f2fd',
+    color: '#1976d2',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    margin: 4,
+    fontSize: 13,
+  },
+  detail: {
+    fontSize: 15,
+    color: '#555',
+    marginTop: 6,
   },
 });
