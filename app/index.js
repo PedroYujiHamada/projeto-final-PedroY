@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ScrollView, TextInput, ActivityIndicator, Image } from 'react-native';
 
 export default function App() {
@@ -25,54 +25,44 @@ export default function App() {
       if (!res.ok) throw new Error('❌ Pokémon não encontrado');
       const data = await res.json();
 
-      // Buscar espécie para descrição e evolução
+      // Buscar espécie para evolução
       const speciesRes = await fetch(data.species.url);
       const speciesData = await speciesRes.json();
 
-      // Pegar descrição em português (ou inglês como fallback)
-      let description = 'Descrição não disponível.';
-      if (speciesData.flavor_text_entries) {
-        const ptEntry = speciesData.flavor_text_entries.find(
-          entry => entry.language.name === 'pt' && entry.version.name.includes('sun')
-        ) || speciesData.flavor_text_entries.find(
-          entry => entry.language.name === 'pt-br'
-        ) || speciesData.flavor_text_entries.find(
-          entry => entry.language.name === 'en'
-        );
-        if (ptEntry) {
-          description = ptEntry.flavor_text
-            .replace(/\f/g, ' ')
-            .replace(/\n/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim();
-        }
-      }
-
-      // Pegar linha evolutiva
-      let evolutionChain = ['—'];
+      // ✅ Pegar linha evolutiva COM IMAGENS
+      let evolutionChain = [];
       if (speciesData.evolution_chain) {
         const chainRes = await fetch(speciesData.evolution_chain.url);
         const chainData = await chainRes.json();
-        
-        const getEvolutionNames = (chain) => {
-          const names = [chain.species.name];
+
+        const extractEvolutionData = async (chain) => {
+          const speciesUrl = chain.species.url;
+          const species = await fetch(speciesUrl).then(r => r.json());
+          const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${species.name}/`);
+          const pokeData = await pokeRes.json();
+          const img = pokeData.sprites?.other?.['official-artwork']?.front_default ||
+                      pokeData.sprites?.front_default;
+
+          const entry = {
+            name: species.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            id: species.id,
+            image: img,
+          };
+
+          const evolutions = [];
           if (chain.evolves_to && chain.evolves_to.length > 0) {
-            chain.evolves_to.forEach(evolution => {
-              names.push(...getEvolutionNames(evolution));
-            });
+            for (const next of chain.evolves_to) {
+              evolutions.push(...await extractEvolutionData(next));
+            }
           }
-          return names;
+
+          return [entry, ...evolutions];
         };
-        evolutionChain = getEvolutionNames(chainData.chain);
+
+        evolutionChain = await extractEvolutionData(chainData.chain);
       }
 
-      // Movimentos (limitar a 8)
-      const moves = data.moves
-        .map(m => m.move.name.replace(/-/g, ' '))
-        .map(name => name.charAt(0).toUpperCase() + name.slice(1))
-        .slice(0, 8);
-
-      // Imagem
+      // ✅ Imagem principal
       const imageUrl = data.sprites.other?.['official-artwork']?.front_default || 
                        data.sprites.front_default;
 
@@ -83,9 +73,7 @@ export default function App() {
         height: (data.height / 10).toFixed(1),
         weight: (data.weight / 10).toFixed(1),
         image: imageUrl,
-        description,
         evolutionChain,
-        moves,
       });
     } catch (err) {
       setError(err.message || '❌ Erro na conexão');
@@ -130,19 +118,15 @@ export default function App() {
           </Text>
         </View>
 
-        {/* === NOVO: Título "PokéAPI:" === */}
+        {/* === Título "PokéAPI:" === */}
         <View style={styles.introTitleContainer}>
           <Text style={styles.introTitle}>PokéAPI:</Text>
         </View>
 
-        {/* === NOVO: Container de explicação da PokéAPI === */}
+        {/* === Container de explicação da PokéAPI === */}
         <View style={styles.apiBox}>
           <Text style={styles.apiText}>
-            A <Text style={styles.bold}>PokéAPI</Text> é uma API REST gratuita e de código aberto que fornece acesso a dados de todos os Pokémon, incluindo tipos, habilidades, evoluções, movimentos e descrições da Pokédex.{`\n\n`}
-            Ela funciona como um “servidor central” que responde requisições HTTP. Por exemplo:{`\n`}
-            • <Text style={styles.code}>GET https://pokeapi.co/api/v2/pokemon/pikachu</Text>{`\n`}
-            retorna um JSON com todos os dados do Pikachu.{`\n\n`}
-            Nenhum dado é armazenado localmente — tudo é buscado em tempo real. Isso torna o app leve e sempre atualizado.
+            A <Text style={styles.bold}>PokéAPI</Text> é uma API REST gratuita e de código aberto que fornece acesso a dados oficiais de todos os Pokémon — incluindo tipos, altura, peso e linha evolutiva.
           </Text>
         </View>
 
@@ -186,24 +170,21 @@ export default function App() {
                 ))}
               </View>
 
-              <Text style={styles.sectionLabel}>📝 Descrição da Pokédex</Text>
-              <Text style={styles.description}>{pokemon.description}</Text>
-
               <Text style={styles.sectionLabel}>🔄 Linha Evolutiva</Text>
-              <Text style={styles.evolution}>
-                {pokemon.evolutionChain.map((name, i) => (
-                  <Text key={i}>
-                    {name.replace(/\b\w/g, l => l.toUpperCase())}
-                    {i < pokemon.evolutionChain.length - 1 ? ' → ' : ''}
-                  </Text>
-                ))}
-              </Text>
-
-              <Text style={styles.sectionLabel}>🎯 Movimentos</Text>
-              <View style={styles.movesGrid}>
-                {pokemon.moves.map((move, i) => (
-                  <Text key={i} style={styles.move}>{move}</Text>
-                ))}
+              <View style={styles.evolutionContainer}>
+                {pokemon.evolutionChain.length > 0 ? (
+                  pokemon.evolutionChain.map((p, i) => (
+                    <View key={p.id} style={styles.evolutionItem}>
+                      {p.image && <Image source={{ uri: p.image }} style={styles.evoImage} />}
+                      <Text style={styles.evoName}>{p.name}</Text>
+                      {i < pokemon.evolutionChain.length - 1 && (
+                        <Text style={styles.arrow}>→</Text>
+                      )}
+                    </View>
+                  ))
+                ) : (
+                  <Text style={styles.evolution}>Não há dados de evolução.</Text>
+                )}
               </View>
 
               <Text style={styles.detail}>Altura: {pokemon.height} m</Text>
@@ -295,7 +276,7 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 500,
   },
-  apiBox: { // ✅ Novo container para PokéAPI
+  apiBox: {
     backgroundColor: '#fff',
     padding: 16,
     borderRadius: 12,
@@ -333,14 +314,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#333',
     lineHeight: 22,
-  },
-  code: {
-    fontFamily: 'monospace',
-    backgroundColor: '#f0f0f0',
-    paddingVertical: 2,
-    paddingHorizontal: 6,
-    borderRadius: 4,
-    fontSize: 14,
   },
   bold: {
     fontWeight: 'bold',
@@ -417,34 +390,33 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingLeft: 4,
   },
-  description: {
-    fontSize: 14,
-    color: '#444',
-    textAlign: 'center',
-    marginBottom: 12,
-    fontStyle: 'italic',
-  },
-  evolution: {
-    fontSize: 15,
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 14,
-    fontWeight: '500',
-  },
-  movesGrid: {
+  evolutionContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginVertical: 10,
+    marginVertical: 12,
+    paddingHorizontal: 8,
   },
-  move: {
-    backgroundColor: '#e3f2fd',
-    color: '#1976d2',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    margin: 4,
-    fontSize: 13,
+  evolutionItem: {
+    alignItems: 'center',
+    marginHorizontal: 6,
+  },
+  evoImage: {
+    width: 60,
+    height: 60,
+    marginBottom: 4,
+  },
+  evoName: {
+    fontSize: 12,
+    fontWeight: '500',
+    textAlign: 'center',
+    color: '#333',
+  },
+  arrow: {
+    fontSize: 18,
+    color: '#777',
+    marginHorizontal: 4,
+    alignSelf: 'center',
   },
   detail: {
     fontSize: 15,
