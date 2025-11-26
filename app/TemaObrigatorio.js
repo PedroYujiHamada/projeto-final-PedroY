@@ -16,14 +16,13 @@ export default function App() {
         <View style={styles.box}>
           <Text style={styles.sectionTitle}>📌 O que é uma API?</Text>
           <Text style={styles.text}>
-            API significa {' '}
-            <Text style={styles.bold}>Application Programming Interface</Text>
-            {' '} (Interface de Programação de Aplicações). É um conjunto de regras e protocolos que permite que softwares se comuniquem.
+            API significa <Text style={styles.bold}>Application Programming Interface</Text> (Interface de Programação de Aplicações). É um conjunto padronizado de métodos, regras e definições que permite que diferentes sistemas de software se comuniquem de forma estruturada.
           </Text>
           <Text style={styles.text}>
-            Pense nela como um {' '}
-            <Text style={styles.bold}>cardápio de restaurante</Text>
-            {': você (cliente) não entra na cozinha (servidor), mas pode pedir pratos (dados/acoes) usando o cardápio (a API).'}
+            Em termos práticos, uma API define <Text style={styles.bold}>como</Text> um serviço pode ser acessado, quais parâmetros aceita, quais formatos de resposta fornece (como JSON ou XML), e quais operações são permitidas.
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.bold}>Analogia do restaurante:</Text> você (cliente) não precisa saber como o prato é preparado na cozinha (servidor). Basta consultar o cardápio (API), fazer o pedido (requisição), e receber o que pediu (resposta). O garçom é a interface — justamente o que a API faz.
           </Text>
         </View>
 
@@ -38,52 +37,78 @@ export default function App() {
         <View style={styles.box}>
           <Text style={styles.sectionTitle}>🔧 Exemplos Reais de APIs</Text>
 
-          <Text style={styles.exampleTitle}>📍 Google Maps API</Text>
+          <Text style={styles.exampleTitle}>📍 Google Maps Platform API</Text>
           <Text style={styles.text}>
-            Apps como Uber ou iFood usam para mostrar mapas e rotas - sem recriar o Google Maps.
+            Usada por aplicativos de logística, delivery e transporte. Permite incorporar mapas interativos, calcular rotas, estimar tempo de trânsito e geolocalizar endereços. A Uber, por exemplo, não constrói seus próprios mapas — integra via API.
           </Text>
 
           <Text style={styles.exampleTitle}>📍 WhatsApp Business API</Text>
           <Text style={styles.text}>
-            Empresas enviam mensagens automaticas (ex: confirmacao de entrega) via interface padronizada.
+            Oferecida pelo Meta para empresas. Permite envio automatizado de mensagens transacionais (ex: confirmação de compra, alertas de entrega), com templates pré-aprovados e suporte a respostas em escala. Garante conformidade com políticas de privacidade.
           </Text>
 
-          <Text style={styles.exampleTitle}>📍 Banco Central (Brasil)</Text>
+          <Text style={styles.exampleTitle}>📍 OpenWeatherMap API</Text>
+          <Text style={styles.text}>
+            Fornece dados meteorológicos em tempo real: temperatura, umidade, vento, previsão por hora/dia. Apps como widgets de clima no celular ou sistemas agrícolas inteligentes consomem esses dados via requisições HTTP simples.
+          </Text>
+
+          <Text style={styles.exampleTitle}>📍 Banco Central do Brasil — SGS API</Text>
           <Text style={styles.code}>
-            GET /dados/serie/bcdata.sgs.10813/dados?formato=json
+            https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados?formato=json
           </Text>
           <Text style={styles.text}>
-            Retorna cotacao do dolar em tempo real - usada por apps financeiros.
+            Retorna a série histórica da taxa SELIC. Outros códigos (ex: 10813 = dólar) permitem construir dashboards econômicos sem raspagem manual de sites.
           </Text>
 
-          <Text style={styles.sectionTitle}>🧩 Partes de uma Requisicao</Text>
+          <Text style={styles.sectionTitle}>🧩 Estrutura de uma Requisição HTTP</Text>
+
           <Text style={styles.text}>
             {'• '}
             <Text style={styles.bold}>Endpoint</Text>
-            {': URL especifica (ex: '}
-            <Text style={styles.code}>/users/123</Text>
-            {')'}
+            {': Endereço único da operação. Ex: '}
+            <Text style={styles.code}>https://api.exemplo.com/v1/users</Text>
           </Text>
+
           <Text style={styles.text}>
             {'• '}
-            <Text style={styles.bold}>Metodo</Text>
-            {': GET, POST, PUT, DELETE'}
+            <Text style={styles.bold}>Método HTTP</Text>
+            {': Define a ação desejada:'}
           </Text>
+          <Text style={[styles.text, { paddingLeft: 24 }]}>
+            – <Text style={styles.bold}>GET</Text>: recupera dados (somente leitura){'\n'}
+            – <Text style={styles.bold}>POST</Text>: cria novo recurso{'\n'}
+            – <Text style={styles.bold}>PUT</Text>: atualiza recurso existente completamente{'\n'}
+            – <Text style={styles.bold}>PATCH</Text>: atualiza parcialmente{'\n'}
+            – <Text style={styles.bold}>DELETE</Text>: remove recurso
+          </Text>
+
           <Text style={styles.text}>
             {'• '}
             <Text style={styles.bold}>Headers</Text>
-            {': Metadados (ex: autenticacao)'}
+            {': Metadados da requisição. Exemplos comuns:'}
           </Text>
+          <Text style={[styles.text, { paddingLeft: 24 }]}>
+            – <Text style={styles.code}>Content-Type: application/json</Text>{'\n'}
+            – <Text style={styles.code}>Authorization: Bearer xyz123</Text>{'\n'}
+            – <Text style={styles.code}>Accept: application/json</Text>
+          </Text>
+
           <Text style={styles.text}>
             {'• '}
-            <Text style={styles.bold}>Body</Text>
-            {': Dados enviados (ex: JSON)'}
+            <Text style={styles.bold}>Body (corpo)</Text>
+            {': Dados enviados no corpo da requisição (em POST/PUT/PATCH). Geralmente no formato:'}
           </Text>
+          <Text style={styles.code}>
+            {"{\n  \"nome\": \"Ana\",\n  \"email\": \"ana@email.com\",\n  \"ativo\": true\n}"}
+          </Text>
+
           <Text style={styles.text}>
             {'• '}
             <Text style={styles.bold}>Resposta</Text>
-            {': '}
-            <Text style={styles.code}>{"{ \"nome\": \"Joao\" }"}</Text>
+            {': O servidor responde com código HTTP (ex: 200 = sucesso, 404 = não encontrado) e, geralmente, um corpo JSON. Exemplo de resposta bem-sucedida:'}
+          </Text>
+          <Text style={styles.code}>
+            {"{\n  \"id\": 101,\n  \"nome\": \"Ana\",\n  \"status\": \"ativo\"\n}"}
           </Text>
         </View>
 
@@ -107,7 +132,7 @@ const styles = StyleSheet.create({
     height: 160,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 28,
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 4,
@@ -125,9 +150,9 @@ const styles = StyleSheet.create({
   },
   box: {
     backgroundColor: '#fff',
-    padding: 16,
+    padding: 24,
     borderRadius: 12,
-    marginBottom: 22,
+    marginBottom: 28,
     borderWidth: 3,
     borderColor: '#fff',
     shadowColor: '#000',
@@ -136,33 +161,35 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
     width: '100%',
-    maxWidth: 520,
+    maxWidth: 540,
     alignItems: 'center',
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#1976d2',
-    marginBottom: 12,
+    marginBottom: 16,
     alignSelf: 'flex-start',
     paddingLeft: 4,
   },
   exampleTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
     color: '#1976d2',
-    marginTop: 12,
+    marginTop: 16,
+    marginBottom: 8,
     alignSelf: 'flex-start',
     paddingLeft: 4,
   },
   text: {
     fontSize: 15,
     color: '#333',
-    lineHeight: 22,
+    lineHeight: 24,
     textAlign: 'left',
     alignSelf: 'flex-start',
     paddingLeft: 4,
     paddingRight: 10,
+    marginBottom: 4,
   },
   bold: {
     fontWeight: 'bold',
@@ -172,9 +199,13 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
     fontSize: 14,
     backgroundColor: '#f0f7ff',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
     borderRadius: 4,
-    color: '#d32f2f',
+    color: '#c73c00',
+    lineHeight: 20,
+    alignSelf: 'flex-start',
+    marginTop: 6,
+    marginBottom: 10,
   },
 });

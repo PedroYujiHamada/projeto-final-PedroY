@@ -1,13 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ScrollView, TextInput, ActivityIndicator, Image } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ScrollView, TextInput, ActivityIndicator, Image, Animated } from 'react-native';
 
 export default function App() {
   const [input, setInput] = useState('');
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showIntro, setShowIntro] = useState(true);
   const inputRef = useRef(null);
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    if (showIntro) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+      ]).start();
+
+      const timer = setTimeout(() => {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 400,
+          useNativeDriver: true,
+        }).start(() => setShowIntro(false));
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showIntro]);
 
   const buscarPokemon = async () => {
     if (!input.trim()) {
@@ -78,6 +109,26 @@ export default function App() {
     else inputRef.current?.focus();
   };
 
+  if (showIntro) {
+    return (
+      <View style={styles.introContainer}>
+        <Animated.View
+          style={[
+            styles.introContent,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          <Text style={styles.introTitle}>Seja Bem-Vindo</Text>
+          <Text style={styles.introSubtitle}>Tela Inicial</Text>
+        </Animated.View>
+        <StatusBar style="dark" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -88,16 +139,15 @@ export default function App() {
         />
 
         <View style={styles.box}>
-          <Image source={require('../assets/images.png')} style={styles.logo} />
+          <Text style={styles.title}>Introdução:</Text>
         </View>
 
         <View style={styles.box}>
-          <Text style={styles.welcome}>Bem-vindo!</Text>
           <Text style={styles.subtitle}>
             Neste aplicativo, você vai explorar três temas:
           </Text>
           <Text style={styles.text}>
-            {'\n'} <Text style={styles.bold}>Pokémon</Text>: criaturas digitais que viraram fenômeno global desde 1996, com tipos, habilidades e evoluções únicas.{'\n\n'}
+            <Text style={styles.bold}>Pokémon</Text>: criaturas digitais que viraram fenômeno global desde 1996, com tipos, habilidades e evoluções únicas.{'\n\n'}
             <Text style={styles.bold}>APIs</Text> (Application Programming Interface): tecnologia que permite que aplicativos troquem dados com servidores — como se fosse um “cardápio” de informações disponíveis na internet.{'\n\n'}
             <Text style={styles.bold}>PokéAPI</Text>: uma API pública e gratuita que reúne dados oficiais de todos os Pokémon. Ela é usada por milhares de devs para criar apps, sites e ferramentas — tudo de forma ética e não comercial.
           </Text>
@@ -140,7 +190,7 @@ export default function App() {
             <View style={styles.result}>
               {pokemon.image && <Image source={{ uri: pokemon.image }} style={styles.img} />}
               <Text style={styles.name}>#{pokemon.id} {pokemon.name}</Text>
-              
+
               <View style={styles.types}>
                 {pokemon.types.map((type, i) => (
                   <Text key={i} style={[styles.type, getTypeStyle(type)]}>{type}</Text>
@@ -218,7 +268,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: { fontSize: 34, fontWeight: 'bold', color: '#1976d2' },
-  welcome: { fontSize: 26, fontWeight: 'bold', color: '#1976d2', marginBottom: 6 },
   subtitle: { fontSize: 18, fontWeight: '600', color: '#444', marginBottom: 16 },
   text: { fontSize: 15, color: '#333', lineHeight: 22 },
   bold: { fontWeight: 'bold', color: '#1976d2' },
@@ -264,4 +313,27 @@ const styles = StyleSheet.create({
   evoName: { fontSize: 12, fontWeight: '500', textAlign: 'center', color: '#333' },
   arrow: { fontSize: 18, color: '#777', marginHorizontal: 4, alignSelf: 'center' },
   detail: { fontSize: 15, color: '#555', marginTop: 6 },
+
+  introContainer: {
+    flex: 1,
+    backgroundColor: '#bbf3f9',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  introContent: {
+    alignItems: 'center',
+    paddingHorizontal: 40,
+  },
+  introTitle: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#1976d2',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  introSubtitle: {
+    fontSize: 20,
+    color: '#555',
+    textAlign: 'center',
+  },
 });
