@@ -13,9 +13,9 @@ export default function App() {
           />
         </View>
 
-        <View style={styles.titleImageContainer}>
+        <View style={styles.box}>
           <Image
-            source={require('../assets/title-1.png')}
+            source={require('../assets/HistoriaPokemon.png')}
             style={styles.titleImage}
             resizeMode="contain"
           />
@@ -38,9 +38,9 @@ export default function App() {
           />
         </View>
 
-        <View style={styles.titleImageContainer}>
+        <View style={styles.box}>
           <Image
-            source={require('../assets/title-2.png')}
+            source={require('../assets/GeracoesPokemon.png')}
             style={styles.titleImage}
             resizeMode="contain"
           />
@@ -74,9 +74,9 @@ export default function App() {
           />
         </View>
 
-        <View style={styles.titleImageContainer}>
+        <View style={styles.box}>
           <Image
-            source={require('../assets/title-3.png')}
+            source={require('../assets/CuriosidadesPokemon.png')}
             style={styles.titleImage}
             resizeMode="contain"
           />
@@ -106,65 +106,58 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#bbf3f9',
+    backgroundColor: '#f9fbfd',
   },
   scrollContent: {
-    padding: 24,
-    paddingBottom: 40,
+    padding: 22,
     alignItems: 'center',
+    paddingBottom: 40,
   },
   banner: {
     width: '100%',
-    height: 160,
+    height: 165,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 32,
-    borderRadius: 12,
+    marginBottom: 28,
+    borderRadius: 14,
     overflow: 'hidden',
     borderWidth: 4,
-    borderColor: '#fff',
+    borderColor: '#ffffff',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.09,
+    shadowRadius: 12,
+    elevation: 5,
   },
   bannerImage: {
     width: '100%',
     height: '100%',
-    opacity: 0.85,
+    opacity: 0.9,
   },
-  titleImageContainer: {
+  box: {
+    backgroundColor: '#ffffff',
+    padding: 22,
+    borderRadius: 14,
+    marginBottom: 28,
+    borderWidth: 3,
+    borderColor: '#dbeafe',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.07,
+    shadowRadius: 10,
+    elevation: 5,
     width: '100%',
-    maxWidth: 500,
-    marginBottom: 20,
+    maxWidth: 540,
     alignItems: 'center',
   },
   titleImage: {
     width: '100%',
-    height: 48,
-    maxWidth: 400,
-  },
-  box: {
-    backgroundColor: '#fff',
-    padding: 28,
-    paddingTop: 20,
-    borderRadius: 12,
-    marginBottom: 36,
-    borderWidth: 3,
-    borderColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    elevation: 4,
-    width: '100%',
-    maxWidth: 560,
-    alignItems: 'center',
+    height: 72,
+    maxWidth: 420,
   },
   text: {
-    fontSize: 15,
-    color: '#333',
+    fontSize: 16,
+    color: '#374151',
     lineHeight: 24,
     textAlign: 'left',
     alignSelf: 'flex-start',
@@ -173,7 +166,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   bold: {
-    fontWeight: 'bold',
-    color: '#1976d2',
+    fontWeight: '700',
+    color: '#1d4ed8',
   },
 });

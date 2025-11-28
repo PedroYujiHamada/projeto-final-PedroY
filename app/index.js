@@ -51,6 +51,7 @@ export default function App() {
     setPokemon(null);
 
     try {
+      // ✅ Corrigido: removi os espaços extras na URL
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${input.toLowerCase().trim()}`);
       if (!res.ok) throw new Error('❌ Pokémon não encontrado');
       const data = await res.json();
@@ -181,7 +182,7 @@ export default function App() {
           {error && <Text style={styles.error}>{error}</Text>}
           {loading && (
             <View style={styles.loading}>
-              <ActivityIndicator size="small" color="#1976d2" />
+              <ActivityIndicator size="small" color="#10B981" />
               <Text style={styles.loadingText}>Buscando...</Text>
             </View>
           )}
@@ -197,7 +198,7 @@ export default function App() {
                 ))}
               </View>
 
-              <Text style={styles.label}>🔄 Linha Evolutiva</Text>
+              <Text style={styles.label}>Linha Evolutiva</Text>
               <View style={styles.evoRow}>
                 {pokemon.evolutionChain.map((p, i) => (
                   <View key={p.id} style={styles.evoItem}>
@@ -232,91 +233,217 @@ const getTypeStyle = (type) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#bbf3f9' },
-  scrollContent: { padding: 20, alignItems: 'center' },
+  container: {
+    flex: 1,
+    backgroundColor: '#f7fbff', 
+  },
+  scrollContent: {
+    padding: 20,
+    alignItems: 'center',
+  },
   banner: {
     width: '100%',
     height: 160,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 24,
-    borderRadius: 12,
+    marginBottom: 26,
+    borderRadius: 14,
     overflow: 'hidden',
     borderWidth: 4,
-    borderColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  bannerImage: { opacity: 0.85 },
-  box: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 22,
-    borderWidth: 3,
-    borderColor: '#fff',
+    borderColor: '#ffffff',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     elevation: 4,
+  },
+  bannerImage: {
+    opacity: 0.9,
+  },
+  box: {
+    backgroundColor: '#ffffff',
+    padding: 20,
+    borderRadius: 14,
+    marginBottom: 26,
+    borderWidth: 3,
+    borderColor: '#dbeafe', 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 5,
     width: '100%',
-    maxWidth: 520,
+    maxWidth: 540,
     alignItems: 'center',
   },
-  title: { fontSize: 34, fontWeight: 'bold', color: '#1976d2' },
-  subtitle: { fontSize: 18, fontWeight: '600', color: '#444', marginBottom: 16 },
-  text: { fontSize: 15, color: '#333', lineHeight: 22 },
-  bold: { fontWeight: 'bold', color: '#1976d2' },
-  logo: { width: 200, height: 70, resizeMode: 'contain' },
-  search: { width: '100%', alignItems: 'center' },
+  title: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#1e40af', 
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 19,
+    fontWeight: '600',
+    color: '#374151',
+    marginBottom: 18,
+    textAlign: 'center',
+  },
+  text: {
+    fontSize: 16,
+    color: '#4b5563',
+    lineHeight: 24,
+    textAlign: 'justify',
+  },
+  bold: {
+    fontWeight: '700',
+    color: '#1d4ed8', 
+  },
+  logo: {
+    width: 220,
+    height: 75,
+    resizeMode: 'contain',
+  },
+  search: {
+    width: '100%',
+    alignItems: 'center',
+  },
   input: {
     width: '100%',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 14,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 16,
     fontSize: 16,
-    backgroundColor: '#fff',
-    marginBottom: 12,
+    backgroundColor: '#ffffff',
+    marginBottom: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    elevation: 1,
   },
   button: {
-    backgroundColor: '#1976d2',
-    paddingHorizontal: 28,
-    paddingVertical: 14,
+    backgroundColor: '#10B981', 
+    paddingHorizontal: 32,
+    paddingVertical: 15,
     borderRadius: 50,
+    shadowColor: '#0d9488',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 3,
   },
-  buttonText: { fontSize: 17, fontWeight: 'bold', color: '#fff' },
-  error: { color: '#d32f2f', fontSize: 14, textAlign: 'center', marginVertical: 10 },
-  loading: { flexDirection: 'row', alignItems: 'center', marginVertical: 10 },
-  loadingText: { marginLeft: 8, fontSize: 15, color: '#555' },
+  buttonText: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
+  error: {
+    color: '#EF4444', 
+    fontSize: 15,
+    textAlign: 'center',
+    marginVertical: 12,
+    fontWeight: '600',
+  },
+  loading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 12,
+  },
+  loadingText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#6b7280',
+  },
   result: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    marginTop: 20,
+    backgroundColor: '#ffffff',
+    borderRadius: 14,
+    padding: 24,
+    marginTop: 24,
     alignItems: 'center',
     width: '100%',
-    maxWidth: 500,
+    maxWidth: 520,
+    borderWidth: 2,
+    borderColor: '#dbeafe',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 6,
   },
-  img: { width: 120, height: 120, marginVertical: 10 },
-  name: { fontSize: 22, fontWeight: 'bold', color: '#333' },
-  types: { flexDirection: 'row', marginVertical: 10 },
-  type: { color: '#fff', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, marginHorizontal: 4, fontSize: 13 },
-  label: { fontSize: 16, fontWeight: 'bold', color: '#1976d2', marginVertical: 12, alignSelf: 'flex-start', paddingLeft: 4 },
-  evoRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' },
-  evoItem: { alignItems: 'center', marginHorizontal: 6 },
-  evoImg: { width: 60, height: 60, marginBottom: 4 },
-  evoName: { fontSize: 12, fontWeight: '500', textAlign: 'center', color: '#333' },
-  arrow: { fontSize: 18, color: '#777', marginHorizontal: 4, alignSelf: 'center' },
-  detail: { fontSize: 15, color: '#555', marginTop: 6 },
+  img: {
+    width: 130,
+    height: 130,
+    marginVertical: 12,
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#1e3a8a',
+    marginBottom: 10,
+  },
+  types: {
+    flexDirection: 'row',
+    marginVertical: 12,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  type: {
+    color: '#ffffff',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginHorizontal: 4,
+    fontSize: 14,
+    fontWeight: '600',
+    minWidth: 80,
+    textAlign: 'center',
+  },
+  label: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#1d4ed8',
+    marginVertical: 14,
+  },
+  evoRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginVertical: 12,
+  },
+  evoItem: {
+    alignItems: 'center',
+    marginHorizontal: 8,
+    marginVertical: 4,
+  },
+  evoImg: {
+    width: 65,
+    height: 65,
+    marginBottom: 6,
+  },
+  evoName: {
+    fontSize: 13,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#374151',
+  },
+  arrow: {
+    fontSize: 20,
+    color: '#9ca3af',
+    marginHorizontal: 6,
+    alignSelf: 'center',
+  },
+  detail: {
+    fontSize: 16,
+    color: '#6b7280',
+    marginTop: 8,
+  },
 
+  // Intro
   introContainer: {
     flex: 1,
-    backgroundColor: '#bbf3f9',
+    backgroundColor: '#e0f2fe',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -325,15 +452,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   introTitle: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#1976d2',
-    marginBottom: 12,
+    fontSize: 38,
+    fontWeight: '800',
+    color: '#0ea5e9',
+    marginBottom: 14,
     textAlign: 'center',
   },
   introSubtitle: {
-    fontSize: 20,
-    color: '#555',
+    fontSize: 21,
+    color: '#3b82f6', 
     textAlign: 'center',
+    fontWeight: '500',
   },
 });

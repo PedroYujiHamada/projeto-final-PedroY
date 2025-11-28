@@ -13,8 +13,11 @@ export default function App() {
           />
         </View>
 
+        <View style={styles.titleBox}>
+          <Text style={styles.sectionTitle}>O que é uma API?</Text>
+        </View>
+
         <View style={styles.box}>
-          <Text style={styles.sectionTitle}>📌 O que é uma API?</Text>
           <Text style={styles.text}>
             API significa <Text style={styles.bold}>Application Programming Interface</Text> (Interface de Programação de Aplicações). É um conjunto padronizado de métodos, regras e definições que permite que diferentes sistemas de software se comuniquem de forma estruturada.
           </Text>
@@ -34,34 +37,48 @@ export default function App() {
           />
         </View>
 
-        <View style={styles.box}>
-          <Text style={styles.sectionTitle}>🔧 Exemplos Reais de APIs</Text>
+        <View style={styles.titleBox}>
+          <Text style={styles.sectionTitle}>Exemplos Reais de APIs</Text>
+        </View>
 
-          <Text style={styles.exampleTitle}>📍 Google Maps Platform API</Text>
+        <View style={styles.box}>
+          <Text style={styles.exampleTitle}>Google Maps Platform API</Text>
           <Text style={styles.text}>
             Usada por aplicativos de logística, delivery e transporte. Permite incorporar mapas interativos, calcular rotas, estimar tempo de trânsito e geolocalizar endereços. A Uber, por exemplo, não constrói seus próprios mapas — integra via API.
           </Text>
 
-          <Text style={styles.exampleTitle}>📍 WhatsApp Business API</Text>
+          <Text style={styles.exampleTitle}>WhatsApp Business API</Text>
           <Text style={styles.text}>
             Oferecida pelo Meta para empresas. Permite envio automatizado de mensagens transacionais (ex: confirmação de compra, alertas de entrega), com templates pré-aprovados e suporte a respostas em escala. Garante conformidade com políticas de privacidade.
           </Text>
 
-          <Text style={styles.exampleTitle}>📍 OpenWeatherMap API</Text>
+          <Text style={styles.exampleTitle}>OpenWeatherMap API</Text>
           <Text style={styles.text}>
             Fornece dados meteorológicos em tempo real: temperatura, umidade, vento, previsão por hora/dia. Apps como widgets de clima no celular ou sistemas agrícolas inteligentes consomem esses dados via requisições HTTP simples.
           </Text>
 
-          <Text style={styles.exampleTitle}>📍 Banco Central do Brasil — SGS API</Text>
+          <Text style={styles.exampleTitle}>Banco Central do Brasil — SGS API</Text>
           <Text style={styles.code}>
             https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados?formato=json
           </Text>
           <Text style={styles.text}>
             Retorna a série histórica da taxa SELIC. Outros códigos (ex: 10813 = dólar) permitem construir dashboards econômicos sem raspagem manual de sites.
           </Text>
+        </View>
 
-          <Text style={styles.sectionTitle}>🧩 Estrutura de uma Requisição HTTP</Text>
+        <View style={styles.banner}>
+          <Image
+            source={require('../assets/API3.png')}
+            style={styles.bannerImage}
+            resizeMode="cover"
+          />
+        </View>
 
+        <View style={styles.titleBox}>
+          <Text style={styles.sectionTitle}>Estrutura de uma Requisição HTTP</Text>
+        </View>
+
+        <View style={styles.box}>
           <Text style={styles.text}>
             {'• '}
             <Text style={styles.bold}>Endpoint</Text>
@@ -121,7 +138,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#bbf3f9',
+    backgroundColor: '#f7fbff',
   },
   scrollContent: {
     padding: 20,
@@ -132,80 +149,93 @@ const styles = StyleSheet.create({
     height: 160,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 28,
-    borderRadius: 12,
+    marginBottom: 26,
+    borderRadius: 14,
     overflow: 'hidden',
     borderWidth: 4,
-    borderColor: '#fff',
+    borderColor: '#ffffff',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 4,
   },
   bannerImage: {
     width: '100%',
     height: '100%',
-    opacity: 0.85,
+    opacity: 0.9,
+  },
+  titleBox: {
+    backgroundColor: '#f0f9ff',
+    padding: 16,
+    borderRadius: 14,
+    marginBottom: 18,
+    borderWidth: 3,
+    borderColor: '#bae6fd',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 3,
+    width: '100%',
+    maxWidth: 540,
+    alignItems: 'center',
   },
   box: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     padding: 24,
-    borderRadius: 12,
+    borderRadius: 14,
     marginBottom: 28,
     borderWidth: 3,
-    borderColor: '#fff',
+    borderColor: '#dbeafe',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 5,
     width: '100%',
     maxWidth: 540,
     alignItems: 'center',
   },
   sectionTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#1976d2',
-    marginBottom: 16,
-    alignSelf: 'flex-start',
-    paddingLeft: 4,
+    fontSize: 23,
+    fontWeight: '800',
+    color: '#1e40af',
   },
   exampleTitle: {
     fontSize: 17,
-    fontWeight: '600',
-    color: '#1976d2',
+    fontWeight: '700',
+    color: '#1d4ed8',
     marginTop: 16,
-    marginBottom: 8,
+    marginBottom: 10,
     alignSelf: 'flex-start',
     paddingLeft: 4,
   },
   text: {
     fontSize: 15,
-    color: '#333',
+    color: '#4b5563',
     lineHeight: 24,
     textAlign: 'left',
     alignSelf: 'flex-start',
     paddingLeft: 4,
     paddingRight: 10,
-    marginBottom: 4,
+    marginBottom: 6,
   },
   bold: {
-    fontWeight: 'bold',
-    color: '#1976d2',
+    fontWeight: '700',
+    color: '#1d4ed8',
   },
   code: {
     fontFamily: 'monospace',
     fontSize: 14,
-    backgroundColor: '#f0f7ff',
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 4,
-    color: '#c73c00',
+    backgroundColor: '#f0f9ff',
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    borderRadius: 6,
+    color: '#0891b2',
     lineHeight: 20,
     alignSelf: 'flex-start',
     marginTop: 6,
-    marginBottom: 10,
+    marginBottom: 12,
   },
 });
