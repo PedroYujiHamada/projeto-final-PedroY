@@ -14,7 +14,7 @@ export default function App() {
         </View>
 
         <View style={styles.titleBox}>
-          <Text style={styles.sectionTitle}>O que é uma API?</Text>
+          <Text style={styles.sectionTitle}>O que é uma API?:</Text>
         </View>
 
         <View style={styles.box}>
@@ -38,7 +38,7 @@ export default function App() {
         </View>
 
         <View style={styles.titleBox}>
-          <Text style={styles.sectionTitle}>Exemplos Reais de APIs</Text>
+          <Text style={styles.sectionTitle}>Exemplos Reais de APIs:</Text>
         </View>
 
         <View style={styles.box}>
@@ -75,7 +75,7 @@ export default function App() {
         </View>
 
         <View style={styles.titleBox}>
-          <Text style={styles.sectionTitle}>Estrutura de uma Requisição HTTP</Text>
+          <Text style={styles.sectionTitle}>Estrutura de uma Requisição HTTP:</Text>
         </View>
 
         <View style={styles.box}>
@@ -91,7 +91,7 @@ export default function App() {
             <Text style={styles.bold}>Método HTTP</Text>
             {': Define a ação desejada:'}
           </Text>
-          <Text style={[styles.text, { paddingLeft: 24 }]}>
+          <Text style={[styles.text, { paddingLeft: 28 }]}>
             – <Text style={styles.bold}>GET</Text>: recupera dados (somente leitura){'\n'}
             – <Text style={styles.bold}>POST</Text>: cria novo recurso{'\n'}
             – <Text style={styles.bold}>PUT</Text>: atualiza recurso existente completamente{'\n'}
@@ -104,7 +104,7 @@ export default function App() {
             <Text style={styles.bold}>Headers</Text>
             {': Metadados da requisição. Exemplos comuns:'}
           </Text>
-          <Text style={[styles.text, { paddingLeft: 24 }]}>
+          <Text style={[styles.text, { paddingLeft: 28 }]}>
             – <Text style={styles.code}>Content-Type: application/json</Text>{'\n'}
             – <Text style={styles.code}>Authorization: Bearer xyz123</Text>{'\n'}
             – <Text style={styles.code}>Accept: application/json</Text>
@@ -138,104 +138,108 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7fbff',
+    backgroundColor: '#f8fafc',
   },
   scrollContent: {
-    padding: 20,
+    padding: 36,
     alignItems: 'center',
+    maxWidth: 960,
+    alignSelf: 'center',
+    width: '100%',
   },
   banner: {
     width: '100%',
-    height: 160,
+    height: 230,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 26,
-    borderRadius: 14,
+    marginBottom: 36,
+    borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 4,
     borderColor: '#ffffff',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 7,
   },
   bannerImage: {
     width: '100%',
     height: '100%',
-    opacity: 0.9,
+    opacity: 0.92,
   },
   titleBox: {
-    backgroundColor: '#f0f9ff',
-    padding: 16,
-    borderRadius: 14,
-    marginBottom: 18,
-    borderWidth: 3,
-    borderColor: '#bae6fd',
+    backgroundColor: '#f1f5f9',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 16,
+    marginBottom: 24,
+    borderWidth: 2,
+    borderColor: '#cbd5e1',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 5,
     width: '100%',
-    maxWidth: 540,
+    maxWidth: 760,
     alignItems: 'center',
   },
   box: {
     backgroundColor: '#ffffff',
-    padding: 24,
-    borderRadius: 14,
-    marginBottom: 28,
-    borderWidth: 3,
-    borderColor: '#dbeafe',
+    padding: 32,
+    borderRadius: 16,
+    marginBottom: 34,
+    borderWidth: 2,
+    borderColor: '#e2e8f0',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.06,
-    shadowRadius: 12,
-    elevation: 5,
+    shadowRadius: 16,
+    elevation: 6,
     width: '100%',
-    maxWidth: 540,
+    maxWidth: 760,
     alignItems: 'center',
   },
   sectionTitle: {
-    fontSize: 23,
+    fontSize: 28,
     fontWeight: '800',
-    color: '#1e40af',
+    color: '#1e3a8a',
   },
   exampleTitle: {
-    fontSize: 17,
+    fontSize: 19,
     fontWeight: '700',
-    color: '#1d4ed8',
-    marginTop: 16,
-    marginBottom: 10,
+    color: '#0ea5e9',
+    marginTop: 18,
+    marginBottom: 12,
     alignSelf: 'flex-start',
-    paddingLeft: 4,
+    paddingLeft: 6,
   },
   text: {
-    fontSize: 15,
-    color: '#4b5563',
-    lineHeight: 24,
+    fontSize: 17,
+    color: '#334155',
+    lineHeight: 26,
     textAlign: 'left',
     alignSelf: 'flex-start',
-    paddingLeft: 4,
-    paddingRight: 10,
-    marginBottom: 6,
+    paddingLeft: 6,
+    paddingRight: 14,
+    marginBottom: 8,
   },
   bold: {
     fontWeight: '700',
-    color: '#1d4ed8',
+    color: '#0ea5e9',
   },
   code: {
     fontFamily: 'monospace',
-    fontSize: 14,
-    backgroundColor: '#f0f9ff',
-    paddingHorizontal: 10,
-    paddingVertical: 7,
+    fontSize: 15,
+    backgroundColor: '#f8fafc',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 6,
     color: '#0891b2',
-    lineHeight: 20,
+    lineHeight: 22,
     alignSelf: 'flex-start',
-    marginTop: 6,
-    marginBottom: 12,
+    marginTop: 8,
+    marginBottom: 14,
   },
 });
