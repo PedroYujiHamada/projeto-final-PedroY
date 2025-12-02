@@ -12,19 +12,19 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+        <Tabs.Screen
+          name="TemaLivre"
+          options={{
+            title: 'Tema Livre',
+            tabBarIcon: ({ color }) => <FontAwesome size={28} name="lightbulb-o" color={color} />,
+            headerShown: false,
+          }}
+        />
       <Tabs.Screen
         name="TemaObrigatorio"
         options={{
           title: 'Tema Obrigatório',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="book" color={color} />,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="TemaLivre"
-        options={{
-          title: 'Tema Livre',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="lightbulb-o" color={color} />,
           headerShown: false,
         }}
       />

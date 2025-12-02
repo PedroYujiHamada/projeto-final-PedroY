@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, Platform } from 'react-native';
 
 export default function App() {
   return (
@@ -114,15 +114,15 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   banner: {
-    width: '100%',
-    height: 165,
+    width: Platform.OS === 'web' ? 850 : '100%',
+    height: Platform.OS === 'web' ? 200 : 160, 
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginBottom: 28,
     borderRadius: 14,
     overflow: 'hidden',
     borderWidth: 4,
-    borderColor: '#ffffff',
+    borderColor: '#93c5fd',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.09,
@@ -140,14 +140,14 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     marginBottom: 28,
     borderWidth: 3,
-    borderColor: '#dbeafe',
+    borderColor: '#93c5fd',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.07,
     shadowRadius: 10,
     elevation: 5,
     width: '100%',
-    maxWidth: 540,
+    maxWidth: 840,
     alignItems: 'center',
   },
   titleImage: {

@@ -1,22 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useRef, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ImageBackground,
-  ScrollView,
-  TextInput,
-  ActivityIndicator,
-  Image,
-  Animated,
-  Platform,
-  Dimensions,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ScrollView, TextInput, ActivityIndicator, Image, Animated, Platform } from 'react-native';
 
-const { width } = Dimensions.get('window');
-const isDesktop = Platform.OS === 'web' && width >= 768;
+
+const isWeb = typeof window !== 'undefined' && window.document != null;
 
 export default function App() {
   const [input, setInput] = useState('');
@@ -149,34 +136,34 @@ export default function App() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ImageBackground
-          source={require('../assets/Pokemon.jpg')}
-          style={[styles.banner, isDesktop && styles.bannerDesktop]}
+          source={require('../assets/Pokemon.png')}
+          style={styles.banner}
           imageStyle={styles.bannerImage}
         />
 
-        <View style={[styles.box, isDesktop && styles.boxDesktop]}>
-          <Text style={[styles.title, isDesktop && styles.titleDesktop]}>Introdução</Text>
+        <View style={styles.box}>
+          <Text style={styles.title}>Introdução:</Text>
         </View>
 
-        <View style={[styles.box, isDesktop && styles.boxDesktop]}>
-          <Text style={[styles.subtitle, isDesktop && styles.subtitleDesktop]}>
+        <View style={styles.box}>
+          <Text style={styles.subtitle}>
             Neste aplicativo, você vai explorar três temas:
           </Text>
-          <Text style={[styles.text, isDesktop && styles.textDesktop]}>
-            <Text style={styles.bold}>Pokémon</Text>: criaturas digitais que viraram fenômeno global desde 1996, com tipos, habilidades e evoluções únicas.
-            {'\n\n'}
-            <Text style={styles.bold}>APIs</Text> (Application Programming Interface): tecnologia que permite que aplicativos troquem dados com servidores — como se fosse um “cardápio” de informações disponíveis na internet.
-            {'\n\n'}
-            <Text style={styles.bold}>PokéAPI</Text>: uma API pública e gratuita que reúne dados oficiais de todos os Pokémon. Ela é usada por milhares de desenvolvedores para criar aplicativos, sites e ferramentas — tudo de forma ética e não comercial.
+          <Text style={styles.text}>
+            <Text style={styles.bold}>Pokémon-</Text> criaturas digitais que viraram fenômeno global desde 1996, com tipos, habilidades e evoluções únicas.{'\n'}
+{'\n'}
+            <Text style={styles.bold}>APIs-</Text> (Application Programming Interface): tecnologia que permite que aplicativos troquem dados com servidores — como se fosse um “cardápio” de informações disponíveis na internet.{'\n'}
+{'\n'}
+            <Text style={styles.bold}>PokéAPI-</Text>: uma API pública e gratuita que reúne dados oficiais de todos os Pokémon. Ela é usada por milhares de devs para criar apps, sites e ferramentas — tudo de forma ética e não comercial.
           </Text>
         </View>
 
-        <View style={[styles.box, isDesktop && styles.boxDesktop]}>
-          <Image source={require('../assets/PokeAPI.png')} style={[styles.logo, isDesktop && styles.logoDesktop]} />
+        <View style={styles.box}>
+          <Image source={require('../assets/PokeAPI.png')} style={styles.logo} />
         </View>
 
-        <View style={[styles.box, isDesktop && styles.boxDesktop]}>
-          <Text style={[styles.text, isDesktop && styles.textDesktop]}>
+        <View style={styles.box}>
+          <Text style={styles.text}>
             A <Text style={styles.bold}>PokéAPI</Text> é uma API REST gratuita e de código aberto que fornece acesso a dados oficiais de todos os Pokémon — incluindo tipos, altura, peso e linha evolutiva.
           </Text>
         </View>
@@ -184,7 +171,7 @@ export default function App() {
         <View style={styles.search}>
           <TextInput
             ref={inputRef}
-            style={[styles.input, isDesktop && styles.inputDesktop]}
+            style={isWeb ? [styles.input, styles.inputWeb] : styles.input}
             placeholder="Ex: pikachu, 25, charizard..."
             value={input}
             onChangeText={setInput}
@@ -192,7 +179,7 @@ export default function App() {
             autoCapitalize="none"
             autoCorrect={false}
           />
-          <TouchableOpacity style={[styles.button, isDesktop && styles.buttonDesktop]} onPress={handleSearch}>
+          <TouchableOpacity style={styles.button} onPress={handleSearch}>
             <Text style={styles.buttonText}>Buscar Pokémon</Text>
           </TouchableOpacity>
 
@@ -205,35 +192,29 @@ export default function App() {
           )}
 
           {pokemon && (
-            <View style={[styles.result, isDesktop && styles.resultDesktop]}>
-              {pokemon.image && <Image source={{ uri: pokemon.image }} style={[styles.img, isDesktop && styles.imgDesktop]} />}
-              <Text style={[styles.name, isDesktop && styles.nameDesktop]}>#{pokemon.id} {pokemon.name}</Text>
+            <View style={styles.result}>
+              {pokemon.image && <Image source={{ uri: pokemon.image }} style={styles.img} />}
+              <Text style={styles.name}>#{pokemon.id} {pokemon.name}</Text>
 
               <View style={styles.types}>
                 {pokemon.types.map((type, i) => (
-                  <Text key={i} style={[styles.type, getTypeStyle(type)]}>
-                    {type}
-                  </Text>
+                  <Text key={i} style={[styles.type, getTypeStyle(type)]}>{type}</Text>
                 ))}
               </View>
 
-              <Text style={[styles.label, isDesktop && styles.labelDesktop]}>Linha Evolutiva</Text>
+              <Text style={styles.label}>Linha Evolutiva</Text>
               <View style={styles.evoRow}>
                 {pokemon.evolutionChain.map((p, i) => (
                   <View key={p.id} style={styles.evoItem}>
-                    {p.image && <Image source={{ uri: p.image }} style={[styles.evoImg, isDesktop && styles.evoImgDesktop]} />}
-                    <Text style={[styles.evoName, isDesktop && styles.evoNameDesktop]}>{p.name}</Text>
-                    {i < pokemon.evolutionChain.length - 1 && <Text style={styles.arrow}> </Text>}
+                    {p.image && <Image source={{ uri: p.image }} style={styles.evoImg} />}
+                    <Text style={styles.evoName}>{p.name}</Text>
+                    {i < pokemon.evolutionChain.length - 1 && <Text style={styles.arrow}>→</Text>}
                   </View>
                 ))}
               </View>
 
-              <Text style={[styles.detail, isDesktop && styles.detailDesktop]}>
-                Altura: {pokemon.height} m
-              </Text>
-              <Text style={[styles.detail, isDesktop && styles.detailDesktop]}>
-                Peso: {pokemon.weight} kg
-              </Text>
+              <Text style={styles.detail}>Altura: {pokemon.height} m</Text>
+              <Text style={styles.detail}>Peso: {pokemon.weight} kg</Text>
             </View>
           )}
         </View>
@@ -265,25 +246,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   banner: {
-    width: '100%',
-    height: 160,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: 26,
-    borderRadius: 14,
-    overflow: 'hidden',
-    borderWidth: 4,
-    borderColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  bannerDesktop: {
-    height: 520,
-    borderRadius: 16,
-    borderWidth: 5,
+  width: Platform.OS === 'web' ? 850 : '100%',
+  height: Platform.OS === 'web' ? 200 : 160, 
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  textAlign: 'center',
+  marginBottom: 26,
+  borderRadius: 14,
+  overflow: 'hidden',
+  borderWidth: 4,
+  borderColor: '#93c5fd',
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.12,
+  shadowRadius: 10,
+  elevation: 4,
+},
+  bannerWeb: {
+    height: 100,
   },
   bannerImage: {
     opacity: 0.9,
@@ -294,32 +274,21 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     marginBottom: 26,
     borderWidth: 3,
-    borderColor: '#dbeafe',
+    borderColor: '#93c5fd',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 5,
     width: '100%',
     maxWidth: 540,
     alignItems: 'center',
   },
-  boxDesktop: {
-    maxWidth: 720,
-    padding: 32,
-    borderRadius: 16,
-    borderWidth: 4,
-    shadowRadius: 16,
-    elevation: 6,
-  },
   title: {
     fontSize: 32,
     fontWeight: '800',
     color: '#1e40af',
     textAlign: 'center',
-  },
-  titleDesktop: {
-    fontSize: 40,
   },
   subtitle: {
     fontSize: 19,
@@ -328,19 +297,11 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     textAlign: 'center',
   },
-  subtitleDesktop: {
-    fontSize: 24,
-  },
   text: {
     fontSize: 16,
     color: '#4b5563',
     lineHeight: 24,
     textAlign: 'justify',
-  },
-  textDesktop: {
-    fontSize: 18,
-    lineHeight: 28,
-    paddingHorizontal: 20,
   },
   bold: {
     fontWeight: '700',
@@ -351,18 +312,14 @@ const styles = StyleSheet.create({
     height: 75,
     resizeMode: 'contain',
   },
-  logoDesktop: {
-    width: 280,
-    height: 90,
-  },
   search: {
-    width: '100%',
+    width: Platform.OS === 'web' ? 600 : '100%',
     alignItems: 'center',
   },
   input: {
     width: '100%',
     borderWidth: 1,
-    borderColor: '#d1d5db',
+    borderColor: '#9ca3af',
     borderRadius: 12,
     padding: 16,
     fontSize: 16,
@@ -370,31 +327,24 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.03,
+    shadowOpacity: 0.04,
     shadowRadius: 4,
     elevation: 1,
   },
-  inputDesktop: {
-    fontSize: 18,
-    padding: 18,
-    borderRadius: 14,
-    maxWidth: 600,
+  inputWeb: {
+    padding: 12,
+    fontSize: 14,
   },
   button: {
     backgroundColor: '#10B981',
     paddingHorizontal: 32,
     paddingVertical: 15,
     borderRadius: 50,
-    shadowColor: '#0d9488',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  buttonDesktop: {
-    paddingHorizontal: 40,
-    paddingVertical: 18,
-    borderRadius: 52,
+    shadowColor: '#059669',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   buttonText: {
     fontSize: 17,
@@ -427,36 +377,23 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 520,
     borderWidth: 2,
-    borderColor: '#dbeafe',
+    borderColor: '#93c5fd',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.09,
     shadowRadius: 14,
     elevation: 6,
-  },
-  resultDesktop: {
-    maxWidth: 640,
-    padding: 32,
-    borderRadius: 16,
   },
   img: {
     width: 130,
     height: 130,
     marginVertical: 12,
   },
-  imgDesktop: {
-    width: 180,
-    height: 180,
-    marginVertical: 16,
-  },
   name: {
     fontSize: 24,
     fontWeight: '800',
     color: '#1e3a8a',
     marginBottom: 10,
-  },
-  nameDesktop: {
-    fontSize: 30,
   },
   types: {
     flexDirection: 'row',
@@ -481,9 +418,6 @@ const styles = StyleSheet.create({
     color: '#1d4ed8',
     marginVertical: 14,
   },
-  labelDesktop: {
-    fontSize: 20,
-  },
   evoRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -500,19 +434,11 @@ const styles = StyleSheet.create({
     height: 65,
     marginBottom: 6,
   },
-  evoImgDesktop: {
-    width: 85,
-    height: 85,
-    marginBottom: 8,
-  },
   evoName: {
     fontSize: 13,
     fontWeight: '600',
     textAlign: 'center',
     color: '#374151',
-  },
-  evoNameDesktop: {
-    fontSize: 15,
   },
   arrow: {
     fontSize: 20,
@@ -524,9 +450,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6b7280',
     marginTop: 8,
-  },
-  detailDesktop: {
-    fontSize: 18,
   },
 
   introContainer: {
