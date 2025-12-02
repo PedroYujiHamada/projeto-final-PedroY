@@ -19,13 +19,16 @@ export default function App() {
 
         <View style={styles.box}>
           <Text style={styles.text}>
-            API significa <Text style={styles.bold}>Application Programming Interface</Text> (Interface de Programação de Aplicações). É um conjunto padronizado de métodos, regras e definições que permite que diferentes sistemas de software se comuniquem de forma estruturada.
+            API significa <Text style={styles.bold}>Application Programming Interface</Text> (Interface de Programação de Aplicações). É um conjunto organizado de regras que permite que dois sistemas conversem de maneira clara e padronizada.
           </Text>
           <Text style={styles.text}>
-            Em termos práticos, uma API define <Text style={styles.bold}>como</Text> um serviço pode ser acessado, quais parâmetros aceita, quais formatos de resposta fornece (como JSON ou XML), e quais operações são permitidas.
+           <Text style={styles.bold}>Ela</Text> diz o que você pode solicitar, quais informações deve enviar e como o sistema vai responder.
+           Isso evita confusão e garante que a comunicação aconteça sempre do mesmo jeito, independentemente de quem esteja usando.
           </Text>
           <Text style={styles.text}>
-            <Text style={styles.bold}>Analogia do restaurante:</Text> você (cliente) não precisa saber como o prato é preparado na cozinha (servidor). Basta consultar o cardápio (API), fazer o pedido (requisição), e receber o que pediu (resposta). O garçom é a interface — justamente o que a API faz.
+            <Text style={styles.bold}>Analogia do restaurante</Text> O cardápio representa a API, porque mostra tudo o que pode ser pedido e como cada pedido deve ser feito.
+            O garçom é a interface: ele recebe seu pedido, leva para a cozinha e depois traz a resposta para você.
+            A cozinha é o servidor, onde tudo realmente acontece, mas você não precisa ver nem entender como funciona.
           </Text>
         </View>
 
@@ -44,17 +47,23 @@ export default function App() {
         <View style={styles.box}>
           <Text style={styles.exampleTitle}>Google Maps Platform API</Text>
           <Text style={styles.text}>
-            Usada por aplicativos de logística, delivery e transporte. Permite incorporar mapas interativos, calcular rotas, estimar tempo de trânsito e geolocalizar endereços. A Uber, por exemplo, não constrói seus próprios mapas — integra via API.
+           É usada por apps de entrega, transporte e logística.
+           Com ela, é possível colocar mapas dentro do aplicativo, calcular rotas, ver tempo de viagem e localizar endereços.
+           Empresas como a Uber não criam seus próprios mapas — elas apenas “puxam” tudo isso do Google através da API.
           </Text>
 
           <Text style={styles.exampleTitle}>WhatsApp Business API</Text>
           <Text style={styles.text}>
-            Oferecida pelo Meta para empresas. Permite envio automatizado de mensagens transacionais (ex: confirmação de compra, alertas de entrega), com templates pré-aprovados e suporte a respostas em escala. Garante conformidade com políticas de privacidade.
+           Criada pelo Meta para empresas.
+           Permite enviar mensagens automáticas, como confirmação de compra, código de entrega, avisos e suporte.
+           As mensagens seguem modelos aprovados pelo WhatsApp para garantir segurança e privacidade.
           </Text>
 
           <Text style={styles.exampleTitle}>OpenWeatherMap API</Text>
           <Text style={styles.text}>
-            Fornece dados meteorológicos em tempo real: temperatura, umidade, vento, previsão por hora/dia. Apps como widgets de clima no celular ou sistemas agrícolas inteligentes consomem esses dados via requisições HTTP simples.
+            Fornece informações de clima em tempo real: temperatura, umidade, vento e previsão.
+            Aplicativos de previsão do tempo, widgets no celular e sistemas agrícolas usam essa API para mostrar dados atualizados.
+            Ela funciona com requisições simples, como um pedido enviado pela internet.
           </Text>
 
           <Text style={styles.exampleTitle}>Banco Central do Brasil — SGS API</Text>
@@ -62,7 +71,10 @@ export default function App() {
             https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados?formato=json
           </Text>
           <Text style={styles.text}>
-            Retorna a série histórica da taxa SELIC. Outros códigos (ex: 10813 = dólar) permitem construir dashboards econômicos sem raspagem manual de sites.
+           Disponibiliza dados oficiais de indicadores econômicos.
+           Por exemplo, o link citado retorna a série histórica da taxa SELIC.
+           Trocando o código da série, você pode pegar dados de dólar, inflação e outros indicadores.
+           Isso ajuda a criar gráficos e dashboards econômicos sem precisar copiar nada manualmente de sites.
           </Text>
         </View>
 
@@ -79,55 +91,56 @@ export default function App() {
         </View>
 
         <View style={styles.box}>
-          <Text style={styles.text}>
-            {'• '}
-            <Text style={styles.bold}>Endpoint</Text>
-            {': Endereço único da operação. Ex: '}
-            <Text style={styles.code}>https://api.exemplo.com/v1/users</Text>
-          </Text>
+  <Text style={styles.text}>
+    {'• '}
+    <Text style={styles.bold}>Endpoint</Text>
+    {': É o endereço específico onde você faz uma ação da API. Ex: '}
+    <Text style={styles.code}>https://api.exemplo.com/v1/users</Text>
+  </Text>
 
-          <Text style={styles.text}>
-            {'• '}
-            <Text style={styles.bold}>Método HTTP</Text>
-            {': Define a ação desejada:'}
-          </Text>
-          <Text style={[styles.text, { paddingLeft: 24 }]}>
-            – <Text style={styles.bold}>GET</Text>: recupera dados (somente leitura){'\n'}
-            – <Text style={styles.bold}>POST</Text>: cria novo recurso{'\n'}
-            – <Text style={styles.bold}>PUT</Text>: atualiza recurso existente completamente{'\n'}
-            – <Text style={styles.bold}>PATCH</Text>: atualiza parcialmente{'\n'}
-            – <Text style={styles.bold}>DELETE</Text>: remove recurso
-          </Text>
+  <Text style={styles.text}>
+    {'• '}
+    <Text style={styles.bold}>Método HTTP</Text>
+    {': Indica o que você quer fazer:'}
+  </Text>
+  <Text style={[styles.text, { paddingLeft: 24 }]}>
+    – <Text style={styles.bold}>GET</Text>: pegar informações{'\n'}
+    – <Text style={styles.bold}>POST</Text>: criar algo novo{'\n'}
+    – <Text style={styles.bold}>PUT</Text>: atualizar tudo{'\n'}
+    – <Text style={styles.bold}>PATCH</Text>: atualizar só uma parte{'\n'}
+    – <Text style={styles.bold}>DELETE</Text>: apagar
+  </Text>
 
-          <Text style={styles.text}>
-            {'• '}
-            <Text style={styles.bold}>Headers</Text>
-            {': Metadados da requisição. Exemplos comuns:'}
-          </Text>
-          <Text style={[styles.text, { paddingLeft: 24 }]}>
-            – <Text style={styles.code}>Content-Type: application/json</Text>{'\n'}
-            – <Text style={styles.code}>Authorization: Bearer xyz123</Text>{'\n'}
-            – <Text style={styles.code}>Accept: application/json</Text>
-          </Text>
+  <Text style={styles.text}>
+    {'• '}
+    <Text style={styles.bold}>Headers</Text>
+    {': Informações extras enviadas junto com a requisição:'}
+  </Text>
+  <Text style={[styles.text, { paddingLeft: 24 }]}>
+    – <Text style={styles.code}>Content-Type: application/json</Text>{'\n'}
+    – <Text style={styles.code}>Authorization: Bearer xyz123</Text>{'\n'}
+    – <Text style={styles.code}>Accept: application/json</Text>
+  </Text>
 
-          <Text style={styles.text}>
-            {'• '}
-            <Text style={styles.bold}>Body (corpo)</Text>
-            {': Dados enviados no corpo da requisição (em POST/PUT/PATCH). Geralmente no formato:'}
-          </Text>
-          <Text style={styles.code}>
-            {"{\n  \"nome\": \"Ana\",\n  \"email\": \"ana@email.com\",\n  \"ativo\": true\n}"}
-          </Text>
+  <Text style={styles.text}>
+    {'• '}
+    <Text style={styles.bold}>Body (corpo)</Text>
+    {': Conteúdo enviado quando você cria ou atualiza algo. Exemplo:'}
+  </Text>
+  <Text style={styles.code}>
+    {"{\n  \"nome\": \"Ana\",\n  \"email\": \"ana@email.com\",\n  \"ativo\": true\n}"}
+  </Text>
 
-          <Text style={styles.text}>
-            {'• '}
-            <Text style={styles.bold}>Resposta</Text>
-            {': O servidor responde com código HTTP (ex: 200 = sucesso, 404 = não encontrado) e, geralmente, um corpo JSON. Exemplo de resposta bem-sucedida:'}
-          </Text>
-          <Text style={styles.code}>
-            {"{\n  \"id\": 101,\n  \"nome\": \"Ana\",\n  \"status\": \"ativo\"\n}"}
-          </Text>
-        </View>
+  <Text style={styles.text}>
+    {'• '}
+    <Text style={styles.bold}>Resposta</Text>
+    {': Retorno do servidor. Vem com um código (ex: 200 = ok, 404 = não achou) e geralmente um JSON:'}
+  </Text>
+  <Text style={styles.code}>
+    {"{\n  \"id\": 101,\n  \"nome\": \"Ana\",\n  \"status\": \"ativo\"\n}"}
+  </Text>
+</View>
+
 
         <StatusBar style="dark" />
       </ScrollView>
@@ -178,7 +191,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
     width: '100%',
-    maxWidth: 540,
+    maxWidth: 850,
     alignItems: 'center',
   },
   box: {
@@ -194,7 +207,7 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 5,
     width: '100%',
-    maxWidth: 540,
+    maxWidth: 850,
     alignItems: 'center',
   },
   sectionTitle: {

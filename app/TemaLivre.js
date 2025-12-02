@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
     width: '100%',
-    maxWidth: 840,
+    maxWidth: 850,
     alignItems: 'center',
   },
   titleImage: {

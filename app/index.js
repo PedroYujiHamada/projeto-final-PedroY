@@ -114,6 +114,7 @@ export default function App() {
 
   if (showIntro) {
     return (
+    
       <View style={styles.introContainer}>
         <Animated.View
           style={[
@@ -147,14 +148,12 @@ export default function App() {
 
         <View style={styles.box}>
           <Text style={styles.subtitle}>
-            Neste aplicativo, você vai explorar três temas:
+            Neste aplicativo, você vai explorar dois temas:
           </Text>
           <Text style={styles.text}>
             <Text style={styles.bold}>Pokémon-</Text> criaturas digitais que viraram fenômeno global desde 1996, com tipos, habilidades e evoluções únicas.{'\n'}
 {'\n'}
-            <Text style={styles.bold}>APIs-</Text> (Application Programming Interface): tecnologia que permite que aplicativos troquem dados com servidores — como se fosse um “cardápio” de informações disponíveis na internet.{'\n'}
-{'\n'}
-            <Text style={styles.bold}>PokéAPI-</Text>: uma API pública e gratuita que reúne dados oficiais de todos os Pokémon. Ela é usada por milhares de devs para criar apps, sites e ferramentas — tudo de forma ética e não comercial.
+            <Text style={styles.bold}>APIs-</Text> (Application Programming Interface): tecnologia que permite que aplicativos troquem dados com servidores como se fosse um “cardápio” de informações disponíveis na internet.
           </Text>
         </View>
 
@@ -164,7 +163,7 @@ export default function App() {
 
         <View style={styles.box}>
           <Text style={styles.text}>
-            A <Text style={styles.bold}>PokéAPI</Text> é uma API REST gratuita e de código aberto que fornece acesso a dados oficiais de todos os Pokémon — incluindo tipos, altura, peso e linha evolutiva.
+            A <Text style={styles.bold}>PokéAPI</Text> é uma API REST gratuita e de código aberto que fornece acesso a dados oficiais de todos os Pokémon incluindo tipos, altura, peso e linha evolutiva.
           </Text>
         </View>
 
@@ -281,7 +280,7 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 5,
     width: '100%',
-    maxWidth: 540,
+    maxWidth: 850,
     alignItems: 'center',
   },
   title: {
@@ -313,7 +312,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   search: {
-    width: Platform.OS === 'web' ? 600 : '100%',
+    width: Platform.OS === 'web' ? 850 : '100%',
     alignItems: 'center',
   },
   input: {
