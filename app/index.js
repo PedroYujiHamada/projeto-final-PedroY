@@ -284,20 +284,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: Platform.OS === 'web' ? 30 : 25,
     fontWeight: '800',
     color: '#1e40af',
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 19,
+    fontSize: Platform.OS === 'web' ? 18 : 15,
     fontWeight: '600',
     color: '#374151',
     marginBottom: 18,
     textAlign: 'center',
   },
   text: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 12,
     color: '#4b5563',
     lineHeight: 24,
     textAlign: 'justify',

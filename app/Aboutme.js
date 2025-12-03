@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, Platform} from 'react-native';
 
 export default function App() {
   return (
@@ -14,17 +14,17 @@ export default function App() {
         </View>
 
         <View style={styles.titleBox}>
-          <Text style={styles.sectionTitle}>Sobre Mim</Text>
+          <Text style={styles.sectionTitle}>Sobre Mim:</Text>
         </View>
 
         <View style={styles.box}>
           <Text style={styles.text}>
-            Olá! Meu nome é Pedro Yuji Hamada, tenho 16 anos e atualmente estou no 2º ano do ensino médio na ETEC Milton Gazzeti de Presidente Venceslau. Sou apaixonado por jogos e tecnologia, e estou sempre buscando aprender coisas novas. Tenho um sonho de morar no Japão e ter uma vida tranquila e feliz.
+            Olá! Meu nome é Pedro Yuji Hamada, tenho 16 anos e atualmente estou no 2º ano do ensino médio na ETEC Milton Gazzeti de Presidente Venceslau. Sou apaixonado por jogos e tecnologia, e estou sempre buscando aprender coisas novas.
           </Text>
         </View>
 
         <View style={styles.titleBox}>
-          <Text style={styles.sectionTitle}>Contatos</Text>
+          <Text style={styles.sectionTitle}>Contatos:</Text>
         </View>
 
         <View style={styles.box}>
@@ -111,20 +111,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    fontSize: 22,
+    fontSize: Platform.OS === 'web' ? 30 : 25,
     fontWeight: '800',
     color: '#1e40af',
     textAlign: 'center',
   },
   text: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 12,
     color: '#374151',
     lineHeight: 24,
     textAlign: 'center',
     paddingHorizontal: 18,
   },
   contactItem: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 12,
     color: '#374151',
     lineHeight: 24,
     textAlign: 'center',

@@ -23,10 +23,10 @@ export default function App() {
 
         <View style={styles.box}>
           <Text style={styles.text}>
-            Pokémon é uma franquia criada por Satoshi Tajiri e Ken Sugimori, desenvolvida pela Game Freak e publicada pela Nintendo. A ideia surgiu da paixão de Tajiri por insetos e da observação de como as conexões de cabos no Game Boy permitiam trocas entre jogadores — inspirando o conceito central de “capturar, treinar e trocar criaturas”.
+            Pokémon é uma franquia criada por Satoshi Tajiri e Ken Sugimori, desenvolvida pela Game Freak e publicada pela Nintendo. A ideia surgiu da paixão de Tajiri por insetos e da inspiração nos cabos de conexão do Game Boy, que permitiam trocas entre jogadores — o que originou o conceito de "capturar, treinar e trocar criaturas".
           </Text>
           <Text style={styles.text}>
-            Em 27 de fevereiro de 1996, foram lançados no Japão os primeiros jogos: <Text style={styles.bold}>Pokémon Red</Text> e <Text style={styles.bold}>Green</Text> (este último substituído por <Text style={styles.bold}>Blue</Text> em versões revisadas). A versão internacional, com <Text style={styles.bold}>Red</Text> e <Text style={styles.bold}>Blue</Text>, chegou à América do Norte em setembro de 1998, tornando-se um fenômeno global.
+            Os primeiros jogos: <Text style={styles.bold}>Pokémon Red</Text> e <Text style={styles.bold}>Green</Text> (este último substituído por <Text style={styles.bold}>Blue</Text> em versões revisadas).foram lançados no Japão em 27 de fevereiro de 1996. A versão internacional, <Text style={styles.bold}>Red</Text> e <Text style={styles.bold}>Blue</Text>, chegou à América do Norte em setembro de 1998, tornando-se um fenômeno global.
           </Text>
         </View>
 
@@ -82,20 +82,21 @@ export default function App() {
           />
         </View>
 
-        <View style={styles.box}>
-          <Text style={styles.text}>
-            Além dos jogos principais, Pokémon expandiu-se para múltiplas mídias. O anime, estrelado por Ash Ketchum (Satoshi no Japão), estreou em 1997 e teve 25 temporadas, tornando-se uma das séries animadas mais longas do mundo. Em 2023, Ash encerrou sua jornada, passando o protagonismo para novos personagens.
-          </Text>
-          <Text style={styles.text}>
-            O <Text style={styles.bold}>Trading Card Game (TCG)</Text>, lançado em 1996, é um dos jogos de carta mais populares globalmente, com torneios oficiais e cartas colecionáveis de alto valor (ex: carta Pikachu Illustrator, vendida por mais de US$ 5 milhões).
-          </Text>
-          <Text style={styles.text}>
-            Filmes animados são lançados anualmente desde 1998; o mais recente, <Text style={styles.bold}>Pokémon Horizons: O Filme</Text>, alinha-se à nova série pós-Ash. Já os jogos spin-off incluem <Text style={styles.bold}>Pokémon GO</Text> (2016), que revolucionou a realidade aumentada em smartphones, e <Text style={styles.bold}>Pokémon Scarlet and Violet</Text> (2022), o primeiro jogo principal em mundo aberto.
-          </Text>
-          <Text style={styles.text}>
-            A franquia gerou mais de US$ 100 bilhões em receita desde seu lançamento, sendo a segunda mais lucrativa da história (atrás apenas da série Mario), com presença em brinquedos, roupas, livros, mangás, parques temáticos (ex: Pokémon Center em Tóquio e Osaka) e colaborações com marcas como Uniqlo, Levi’s e McDonald’s.
-          </Text>
-        </View>
+  <View style={styles.box}>
+  <Text style={styles.text}>
+    Pokémon se expandiu além dos jogos principais para diversas mídias. O anime, com Ash Ketchum como protagonista, estreou em 1997 e teve 25 temporadas, tornando-se uma das séries animadas mais longas do mundo. Em 2023, Ash passou o protagonismo para novos personagens.
+  </Text>
+  <Text style={styles.text}>
+    O <Text style={styles.bold}>Trading Card Game (TCG)</Text>, lançado em 1996, é um dos jogos de carta mais populares globalmente, com torneios oficiais e cartas de alto valor, como a carta Pikachu Illustrator, que foi vendida por mais de US$ 5 milhões.
+  </Text>
+  <Text style={styles.text}>
+    Desde 1998, filmes animados são lançados anualmente, com o mais recente sendo <Text style={styles.bold}>Pokémon Horizons: O Filme</Text>, alinhado à nova série pós-Ash. A franquia também tem jogos spin-off, como <Text style={styles.bold}>Pokémon GO</Text> (2016), que popularizou a realidade aumentada, e <Text style={styles.bold}>Pokémon Scarlet and Violet</Text> (2022), o primeiro jogo principal em mundo aberto.
+  </Text>
+  <Text style={styles.text}>
+    Com mais de US$ 100 bilhões em receita, Pokémon é a segunda franquia mais lucrativa da história, atrás apenas de Mario. Além dos jogos e anime, a franquia está presente em brinquedos, roupas, livros, mangás, parques temáticos (como o Pokémon Center em Tóquio e Osaka) e parcerias com marcas como Uniqlo, Levi’s e McDonald’s.
+  </Text>
+</View>
+
 
         <StatusBar style="dark" />
       </ScrollView>
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     maxWidth: 420,
   },
   text: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 12,
     color: '#374151',
     lineHeight: 24,
     textAlign: 'left',

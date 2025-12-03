@@ -14,7 +14,7 @@ export default function App() {
         </View>
 
         <View style={styles.titleBox}>
-          <Text style={styles.sectionTitle}>O que é uma API?</Text>
+          <Text style={styles.sectionTitle}>O que é uma API?:</Text>
         </View>
 
         <View style={styles.box}>
@@ -41,7 +41,7 @@ export default function App() {
         </View>
 
         <View style={styles.titleBox}>
-          <Text style={styles.sectionTitle}>Exemplos Reais de APIs</Text>
+          <Text style={styles.sectionTitle}>Exemplos Reais de APIs:</Text>
         </View>
 
         <View style={styles.box}>
@@ -87,14 +87,14 @@ export default function App() {
         </View>
 
         <View style={styles.titleBox}>
-          <Text style={styles.sectionTitle}>Estrutura de uma Requisição HTTP</Text>
+          <Text style={styles.sectionTitle}>Estrutura de uma Requisição HTTP:</Text>
         </View>
 
         <View style={styles.box}>
   <Text style={styles.text}>
     {'• '}
     <Text style={styles.bold}>Endpoint</Text>
-    {': É o endereço específico onde você faz uma ação da API. Ex: '}
+    {': É o endereço específico onde você faz uma ação da API. Ex: '}{'\n'}
     <Text style={styles.code}>https://api.exemplo.com/v1/users</Text>
   </Text>
 
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     overflow: 'hidden',
     borderWidth: 4,
-    borderColor: '#ffffff',
+    borderColor: '#93c5fd',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -211,12 +211,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    fontSize: 23,
+    fontSize: Platform.OS === 'web' ? 30 : 25,
     fontWeight: '800',
     color: '#1e40af',
   },
   exampleTitle: {
-    fontSize: 17,
+    fontSize: Platform.OS === 'web' ? 18 : 14,
     fontWeight: '700',
     color: '#1d4ed8',
     marginTop: 16,
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
   },
   text: {
-    fontSize: 15,
+    fontSize: Platform.OS === 'web' ? 16 : 12,
     color: '#4b5563',
     lineHeight: 24,
     textAlign: 'left',
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   },
   code: {
     fontFamily: 'monospace',
-    fontSize: 14,
+    fontSize: Platform.OS === 'web' ? 16 : 11,
     backgroundColor: '#f0f9ff',
     paddingHorizontal: 10,
     paddingVertical: 7,
